@@ -1,0 +1,36 @@
+# Laravel specific
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+/.env
+/.env.backup
+/.env.local
+/.env.development.local
+/.env.test.local
+/.env.production.local
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# Vite specific
+/vite.config.js
+/dist
+
+# Tailwind CSS specific
+/tailwind.config.js
+
+# IDE specific
+.idea
+.vscode
+*.swp
+
+# MacOS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+/.fleet
+/.idea
+/.vscode
