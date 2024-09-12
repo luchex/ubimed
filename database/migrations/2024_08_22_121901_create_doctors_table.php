@@ -6,17 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('specialty');
+            $table->string('specialty')->nullable(); // Cambiado a nullable
             $table->text('photo_url')->nullable();
             $table->text('schedule')->nullable();
             $table->boolean('attends_covid')->default(false);
@@ -30,11 +25,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('doctors');

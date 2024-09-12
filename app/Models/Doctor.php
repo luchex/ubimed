@@ -9,5 +9,10 @@ class Doctor extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'specialty', 'phone', 'email'];
+    protected $fillable = ['name', 'phone', 'email'];
+
+    public function specialties()
+    {
+        return $this->belongsToMany(Specialty::class);
+    }
 }
