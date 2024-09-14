@@ -10,7 +10,13 @@ class DoctorController extends Controller
 {
     public function index()
     {
-        $doctors = Doctor::all();
+        $doctors = Doctor::with('specialties')->get()->map(function ($doctor) {
+            return [
+                'id' => $doctor->id,
+                'name' => $doctor->name,
+                'specialty' => $doctor->specialties->pluck('name')->implode(', ')
+            ];
+        });
         return view('doctors.index', compact('doctors'));
     }
     public function create()
