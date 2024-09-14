@@ -9,20 +9,6 @@ class DoctorsTableSeeder extends Seeder
 {
     public function run()
     {
-        Doctor::create([
-            'name' => 'Dr. Juan Pérez',
-            'specialty' => 'Cardiología',
-            'phone' => '555-1234',
-            'email' => 'juan.perez@example.com',
-        ]);
-
-        Doctor::create([
-            'name' => 'Dra. María García',
-            'specialty' => 'Pediatría',
-            'phone' => '555-5678',
-            'email' => 'maria.garcia@example.com',
-        ]);
-
-        // Agrega más doctores si lo deseas
+        Doctor::factory()->count(10)->create();
     }
 }

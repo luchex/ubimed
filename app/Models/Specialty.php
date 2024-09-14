@@ -10,4 +10,9 @@ class Specialty extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function doctors()
+    {
+        return $this->belongsToMany(Doctor::class);
+    }
 }

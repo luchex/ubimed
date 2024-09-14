@@ -10,8 +10,7 @@ return new class extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('specialty')->nullable(); // Cambiado a nullable
+            $table->string('name');            
             $table->text('photo_url')->nullable();
             $table->text('schedule')->nullable();
             $table->boolean('attends_covid')->default(false);

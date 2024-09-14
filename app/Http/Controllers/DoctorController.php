@@ -10,10 +10,9 @@ class DoctorController extends Controller
 {
     public function index()
     {
-        $doctors = Doctor::with('specialties')->get();
+        $doctors = Doctor::all();
         return view('doctors.index', compact('doctors'));
     }
-
     public function create()
     {
         $specialties = Specialty::all();
@@ -24,22 +23,27 @@ class DoctorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'phone' => 'required|max:20',
-            'email' => 'required|email|max:255',
             'specialties' => 'required|array',
+            'specialties.*' => 'exists:specialties,id',
+            'phone' => 'required',
+            'email' => 'required|email',
         ]);
 
-        $doctor = Doctor::create($validatedData);
-        $doctor->specialties()->attach($request->specialties);
+        $doctor = Doctor::create([
+            'name' => $validatedData['name'],
+            'phone' => $validatedData['phone'],
+            'email' => $validatedData['email'],
+        ]);
 
-        return redirect()->route('doctors.index')->with('success', 'Doctor agregado exitosamente.');
+        $doctor->specialties()->attach($validatedData['specialties']);
+
+        return redirect()->route('doctors.index')->with('success', 'Doctor creado exitosamente.');;
     }
 
     public function show(Doctor $doctor)
     {
         return view('doctors.show', compact('doctor'));
     }
-
     public function edit(Doctor $doctor)
     {
         $specialties = Specialty::all();
@@ -48,19 +52,13 @@ class DoctorController extends Controller
 
     public function update(Request $request, Doctor $doctor)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'phone' => 'required|max:20',
-            'email' => 'required|email|max:255',
-            'specialties' => 'required|array',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'specialty_id' => 'required|exists:specialties,id',
         ]);
-
-        $doctor->update($validatedData);
-        $doctor->specialties()->sync($request->specialties);
-
+        $doctor->update($validated);
         return redirect()->route('doctors.index')->with('success', 'Doctor actualizado exitosamente.');
     }
-
     public function destroy(Doctor $doctor)
     {
         $doctor->specialties()->detach();
