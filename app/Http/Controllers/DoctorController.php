@@ -19,7 +19,7 @@ class DoctorController extends Controller
         });
         return view('doctors.index', compact('doctors'));
     }
-    
+
     public function create()
     {
         $specialties = Specialty::all();
