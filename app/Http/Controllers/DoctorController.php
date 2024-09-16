@@ -46,8 +46,9 @@ class DoctorController extends Controller
         return redirect()->route('doctors.index')->with('success', 'Doctor creado exitosamente.');;
     }
 
-    public function show(Doctor $doctor)
+    public function show($id)
     {
+        $doctor = Doctor::with('specialties')->findOrFail($id);
         return view('doctors.show', compact('doctor'));
     }
     public function edit(Doctor $doctor)
