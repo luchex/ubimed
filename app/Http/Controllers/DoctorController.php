@@ -19,6 +19,7 @@ class DoctorController extends Controller
         });
         return view('doctors.index', compact('doctors'));
     }
+    
     public function create()
     {
         $specialties = Specialty::all();
@@ -51,21 +52,25 @@ class DoctorController extends Controller
         $doctor = Doctor::with('specialties')->findOrFail($id);
         return view('doctors.show', compact('doctor'));
     }
-    public function edit(Doctor $doctor)
+
+    public function edit($id)
     {
+        $doctor = Doctor::with('specialties')->findOrFail($id);
         $specialties = Specialty::all();
         return view('doctors.edit', compact('doctor', 'specialties'));
     }
 
     public function update(Request $request, Doctor $doctor)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'specialty_id' => 'required|exists:specialties,id',
-        ]);
-        $doctor->update($validated);
-        return redirect()->route('doctors.index')->with('success', 'Doctor actualizado exitosamente.');
+        $doctor->update($request->except('specialty_id'));
+
+        if ($request->has('specialty_id')) {
+            $doctor->specialties()->sync([$request->specialty_id]);
+        }
+
+        return redirect()->route('doctors.index')->with('success', 'Doctor actualizado correctamente');
     }
+
     public function destroy(Doctor $doctor)
     {
         $doctor->specialties()->detach();
